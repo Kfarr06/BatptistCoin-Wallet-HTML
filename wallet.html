@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BaptistCoin Wallet</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fdf6e3;
+      color: #333;
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 28px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #2c3e50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #34495e;
+    }
+    input {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #output {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🪙 BaptistCoin Web Wallet</h1>
+
+  <div class="section">
+    <button onclick="callRPC('/mine')">⛏️ Mine Block</button>
+    <button onclick="callRPC('/wallet')">👛 View Wallets</button>
+    <button onclick="callRPC('/pending')">📜 View Pending Transactions</button>
+  </div>
+
+  <div class="section">
+    <h3>💸 Send Transaction</h3>
+    <input id="from" placeholder="From Address">
+    <input id="to" placeholder="To Address">
+    <input id="amount" placeholder="Amount">
+    <input id="seed" placeholder="🗝️ Seed (optional)">
+    <button onclick="sendTransaction()">Send</button>
+  </div>
+
+  <div class="section">
+    <h3>📤 Output</h3>
+    <div id="output">Waiting for command...</div>
+  </div>
+
+  <script>
+    const baseURL = 'https://marry-unsnaky-rollingly.ngrok-free.dev'; // Replace with your actual Ngrok URL
+
+    function callRPC(endpoint) {
+      fetch(baseURL + endpoint)
+        .then(res => res.text())
+        .then(data => document.getElementById('output').innerText = data)
+        .catch(err => document.getElementById('output').innerText = 'Error: ' + err);
+    }
+
+    function sendTransaction() {
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      const amount = document.getElementById('amount').value;
+      const url = `/send?from=${from}&to=${to}&amount=${amount}`;
+      callRPC(url);
+    }
+  </script>
+</body>
+</html>
